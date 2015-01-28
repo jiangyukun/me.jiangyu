@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<weblogic-web-app xmlns="http://xmlns.oracle.com/weblogic/weblogic-web-app"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  version="1.4">
+
+    <context-root>/</context-root>
+
+
+<!--    <jsp-descriptor>
+        <keepgenerated>false</keepgenerated>
+        <page-check-seconds>-1</page-check-seconds>
+        <verbose>true</verbose>
+        <debug>true</debug>
+    </jsp-descriptor>
+    <container-descriptor>
+        <prefer-web-inf-classes>true</prefer-web-inf-classes>
+    </container-descriptor>-->
+
+</weblogic-web-app>

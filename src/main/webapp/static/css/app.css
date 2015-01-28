@@ -1,0 +1,36 @@
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 100%;
+}
+.container {
+    width: 80%;
+    margin: 3rem auto;
+}
+
+.center {
+    display: block;
+    width: 40%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.input_line {
+    margin: 1rem 0;
+}
+
+textarea {
+
+}
+
+.warning {
+    color: red;
+}
+
+.user_info {
+    float: right;
+}

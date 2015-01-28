@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>导航条</title>
+    <script src="../js/jquery-2.1.1.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10%;
+            text-align: center;
+            background-color: #ccc;
+        }
+
+        #container {
+            position: fixed;
+            top: 10%;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        h1 {
+            border: 1px solid #22aadd;
+        }
+    </style>
+</head>
+<body>
+<div id="head" class="nav"></div>
+<div id="container"></div>
+<div>other</div>
+<div>other</div>
+<div>other</div>
+<div>other</div>
+<div>other</div>
+<div>other</div>
+<div>other</div>
+<h1 id="a">A</h1>
+
+<h1 id="b">B</h1>
+
+<h1 id="c">C</h1>
+
+<h1 id="d">D</h1>
+
+<h1 id="e">E</h1>
+
+<div>e</div>
+<script>
+    var i, k, str = "abcde", ele;
+    var $elements = getElements();
+    for (k = 100; k > 0; k--) {
+        for (i = 0; i < $elements.length; i++) {
+            ele = $elements[i];
+            ele.after($('<div>' + str[i] + k + '</div>'));
+        }
+    }
+    function getElements() {
+        var $elements = [];
+        for (i = 0; i < str.length; i++) {
+            $elements[i] = $("#" + str[i]);
+        }
+        return $elements;
+    }
+    function compensate() {
+        $("#compensate").remove();
+        var height = window.innerHeight;
+        var $compensate = $('<div id="compensate">');
+        $compensate.css("height", height / 10);
+        $("#container").after($compensate);
+    }
+    var heightToTop = (function () {
+        var rootParent = $("html");
+        return function (ele) {
+            var height2Top = ele.offset().top - ele.scrollTop() - $(window).scrollTop();
+            var parent = ele.offsetParent();
+            while (parent[0] != rootParent[0]) {
+                height2Top = height2Top - parent.scrollTop();
+                parent = parent.offsetParent();
+            }
+            return height2Top;
+        }
+    }());
+    function navigateBar() {
+        var UP = -1,
+                DOWN = 1,
+                direction,
+                beforePosition = 0,
+                containerTop = $("#head").height(),
+                $container = $("#container"),
+                $children;
+        return function () {
+            var i, j, $show, $next,
+                    $ele, $eles, h,
+                    position = $(window).scrollTop(),
+                    $clone, distance, nextHeight;
+            if (position - beforePosition > 0) {
+                direction = DOWN;
+            } else {
+                direction = UP;
+            }
+            beforePosition = position;
+            $eles = getElements();
+            for (i = 0; i < $eles.length; i++) {
+                $ele = $eles[i];
+                if (direction == DOWN) {
+                    h = heightToTop($ele) - (containerTop + $container.height());
+                } else {
+                    h = heightToTop($ele) - containerTop;
+                }
+                if (h <= 0) {
+                    $show = $ele;
+                    j = i + 1;
+                }
+            }
+            if (j < $eles.length) {
+                $next = $eles[j];
+            }
+            $children = $container.children();
+            if ($show) {
+                $container.css("height", $show.height() + 2);
+                distance = heightToTop($show) + $show.height() - (containerTop + $container.height());
+                if (distance <= 0) {
+                    $children.remove();
+                    $clone = $show.clone(true).removeAttr("id").css("visibility", "visible").css("background-color", "white");
+                    $container.append($clone);
+                    $children = $container.children();
+                } else {
+                    $children.css("margin-top", distance - $container.height() + 2 + "px");
+                }
+                if (direction == UP) {
+                    nextHeight = heightToTop($next) - containerTop;
+                    if (nextHeight < $container.height()) {
+                        $children.css("margin-top", nextHeight - $container.height() + "px");
+                    }
+                }
+            } else {
+                $container.css("height", 0);
+                $children.remove();
+            }
+        };
+    }
+    function buildNavigateBar() {
+        compensate();
+        $(window).unbind("scroll");
+        $(window).bind("scroll", navigateBar());
+    }
+    buildNavigateBar();
+    $(window).resize(function () {
+        buildNavigateBar();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../js/jquery-2.1.1.js"></script>
+    <style>
+        .div {
+            overflow: auto;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+<div class="div">
+    <h1>1</h1><h1>1</h1><h1>1</h1><h1>1</h1><h1>1</h1><h1>1</h1><h1>1</h1><h1>1</h1><h1>1</h1>
+<span id="h">hhh</span>
+
+</div>
+<script>
+    for (var i = 1; i < 20; i++) {
+        $("body").append('<h1>1</h1>');
+    }
+    setInterval(function () {
+        var ele = $("#h"), root = $("html");
+        var height2Top = ele.offset().top - ele.scrollTop() - $(window).scrollTop();
+        var parent = ele.offsetParent();
+        while (parent[0] != root[0]) {
+            height2Top = height2Top - parent.scrollTop();
+            parent = parent.offsetParent();
+        }
+        console.info(height2Top);
+    }, 2000);
+</script>
+</body>
+</html>
